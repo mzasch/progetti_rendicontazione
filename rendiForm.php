@@ -36,10 +36,10 @@
     exit;
   }
 
-?>                    
+?>
 
                     <form id="form" class="form-horizontal" method="post" action="inviaOre.php">
-						<div class="form-group">
+<?php /*						<div class="form-group">
         					<label for="sDocente" class="cols-sm-2 control-label">Scegli il docente:</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
@@ -51,12 +51,12 @@
 							              $nome = $res['nome'];
 							              echo "<option value='" . $res['id'] . "'>" . $cognome . " " . $nome . "</option>\n";
 							            }
-							          ?>	
+							          ?>
 									</select>
 								</div>
 							</div>
 						</div>
-
+*/ ?>
 						<div class="form-group">
 							<label for="sProgetto" class="cols-sm-2 control-label">Scegli un progetto:</label>
 							<div class="cols-sm-10">
@@ -67,7 +67,7 @@
 							            while($res = mysqli_fetch_assoc($progetti)) {
 								            $nome_progetto = $res['nome_progetto'];
 									        echo "<option value='" . $res['id'] . "'>" . $nome_progetto . "</option>\n";
-										}							            
+										}
 							        ?>
 							        </select>
 								</div>

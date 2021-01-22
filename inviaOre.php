@@ -1,18 +1,28 @@
 <?php
   session_start();
-  require('env.php');
+  require_once('env.php');
   $conn = mysqli_connect($host, $user, $password, $dbname)
           or die('Something went horribly wrong with the connection' . mysqli_connect_error());
-  if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+  if (isset($_SESSION['loggedEmail']) && $_SESSION['loggedEmail']) {
+      $query_docenti  = "SELECT d.id FROM rend_docenti d ".
+                        " WHERE d.email = '" . $_SESSION['loggedEmail'] . "'";
+
+      if(!$dati_docente = mysqli_query($connection,$query_docenti)) {
+        echo "Something went horribly wrong with the query \"docenti\"\n";
+        echo "Errno: " . $connection -> errno . "\n";
+        echo "Error: " . $connection -> error . "\n";
+        exit;
+      }
+
 	  $insert_ora  = $conn->prepare("INSERT INTO rend_orerendicontate (`docente`,`progetto`,`dataOra`, `nOre`, `tipologiaOre`) VALUES (?,?,?,?,?)");
 
-	  $docente = $_POST['docente'];
+	  $docente = $dati_docente['id'];
 	  $progetto = $_POST['progetto'];
 	  $dataOra = $_POST['data'] . $_POST['orainizio'];
 	  $nOre = $_POST['nOre'];
 	  $tOre = $_POST['tipoOre'];
 
-	  $insert_ora->bind_param("sssii", $docente, $progetto, $dataOra, $nOre, $tOre);
+	  $insert_ora->bind_param("issii", $docente, $progetto, $dataOra, $nOre, $tOre);
 
 	  if (!$insert_ora->execute()) {
 		echo "Something went horribly wrong with the insert\n";
@@ -35,7 +45,7 @@
     <title>Inserimento completato</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.1/css/font-awesome.min.css">
-	<link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' > 
+	<link rel='stylesheet' type='text/css' href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' >
 	<link rel="stylesheet" type="text/css" href="jquery.datetimepicker.css"/>
 	<link rel="stylesheet" type="text/css" href="style.css" />
 </head>
@@ -47,13 +57,13 @@
 	            	<h1 class="title">Operazione completata</h1>
 	               	<hr />
 	            </div>
-			</div> 
+			</div>
 			<div class="main-login main-center">
 				<p>Rendicontazione inserita con successo.</p>
 				<p>Clicca <a href="index.php">qui</a> per inserire un'altra ora.</p>
 			</div>
 		</div>
-	</div>		
+	</div>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </body>
 </html>
