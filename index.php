@@ -73,13 +73,18 @@
     <script src="js/jquery.datetimepicker.js"></script>
     <script src="js/griglia.js"></script>
 	<script>
-        function twoDigits(d) {
-            return d.toString().padStart(2, '0');
-        }
+    function twoDigits(d) {
+        return d.toString().padStart(2, '0');
+    }
 
-        function ConvertToMySqlString(d){
-	        return `${d.getFullYear()}-${twoDigits(1 + d.getMonth())}-${twoDigits(d.getDate())} ${twoDigits(d.getHours())}:${twoDigits(d.getMinutes())}:00`;
-        }
+    function ConvertToMySqlStringDate(d){
+      return `${d.getFullYear()}-${twoDigits(1 + d.getMonth())}-${twoDigits(d.getDate())}`;
+    }
+
+    function ConvertToMySqlStringTime(d){
+      return `${twoDigits(d.getHours())}:${twoDigits(d.getMinutes())}:00`;
+    }
+
 
 		$.datetimepicker.setLocale('it');
 		$('#sData').datetimepicker({inline:true,step:10,});
@@ -87,15 +92,20 @@
 		$("#form").submit( function(eventObj) {
 			$(this).find("input[name=data]").remove();
 			var newData = $('#sData').datetimepicker('getValue');
-			var data = ConvertToMySqlString(newData);
-		    $("<input />").attr("type", "hidden")
-        	.attr("name", "data")
-          	.attr("value", data)
-          	.appendTo("#form");
-		    return true;
-	  	});
+			var data = ConvertToMySqlStringDate(newData);
+      var ora = ConvertToMySqlStringTime(newData);
+		  $("<input />").attr("type", "hidden")
+          .attr("name", "data")
+          .attr("value", data)
+          .appendTo("#form");
+      $("<input />").attr("type", "hidden")
+          .attr("name", "ora")
+          .attr("value", ora)
+          .appendTo("#form");
+		  return true;
+	  });
 
-        $("#tabs").tabs();
+    $("#tabs").tabs();
 	</script>
 </body>
 </html>
