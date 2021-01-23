@@ -74,18 +74,11 @@
     <script src="js/griglia.js"></script>
 	<script>
         function twoDigits(d) {
-            if(0 <= d && d < 10) return "0" + d.toString();
-            if(-10 < d && d < 0) return "-0" + (-1*d).toString();
-            return d.toString();
+            return d.toString().padStart(2, '0');
         }
 
         function ConvertToMySqlString(d){
-	        return d.getUTCFullYear() + "-"
-                    + twoDigits(1 + d.getUTCMonth()) + "-"
-                    + twoDigits(d.getUTCDate()) + " "
-                    + twoDigits(d.getUTCHours()) + ":"
-                    + twoDigits(d.getUTCMinutes()) + ":"
-                    + twoDigits(d.getUTCSeconds());
+	        return `${d.getFullYear()}-${twoDigits(1 + d.getMonth())}-${twoDigits(d.getDate())} ${twoDigits(d.getHours())}:${twoDigits(d.getMinutes())}:00`;
         }
 
 		$.datetimepicker.setLocale('it');

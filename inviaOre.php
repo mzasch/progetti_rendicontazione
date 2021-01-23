@@ -7,10 +7,10 @@
       $query_docenti  = "SELECT d.id FROM rend_docenti d ".
                         " WHERE d.email = '" . $_SESSION['loggedEmail'] . "'";
 
-      if(!$dati_docente = mysqli_query($connection,$query_docenti)) {
+      if(!$dati_docente = mysqli_query($conn,$query_docenti)) {
         echo "Something went horribly wrong with the query \"docenti\"\n";
-        echo "Errno: " . $connection -> errno . "\n";
-        echo "Error: " . $connection -> error . "\n";
+        echo "Errno: " . $conn -> errno . "\n";
+        echo "Error: " . $conn -> error . "\n";
         exit;
       }
 
@@ -18,7 +18,7 @@
 
 	  $docente = $dati_docente['id'];
 	  $progetto = $_POST['progetto'];
-	  $dataOra = $_POST['data'] . $_POST['orainizio'];
+	  $dataOra = $_POST['data'];
 	  $nOre = $_POST['nOre'];
 	  $tOre = $_POST['tipoOre'];
 

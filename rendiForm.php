@@ -87,7 +87,7 @@
         					<label for="sOre" class="cols-sm-2 control-label">Inserisci la durata dell'attivit&agrave;</label>
 							<div class="cols-sm-10">
 								<div class="input-group">
-							        <input id="sOre" type = "number" name = "nOre" class="form-control" min='1' max='8'/>
+							        <input id="sOre" type = "number" name = "nOre" class="form-control" min='0.5' max='8' step='0.5'/>
 								</div>
 							</div>
 						</div>
