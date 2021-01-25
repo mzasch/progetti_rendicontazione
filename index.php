@@ -3,6 +3,7 @@
   session_start();
   require('env.php');
   include_once('google_oauth_config.php');
+  include_once('role_config.php');
 ?>
 <html>
 	<head>
@@ -40,7 +41,9 @@
                       <ul>
                         <li><a href="#tabs-1">Ore inserite</a></li>
                         <li><a href="#tabs-2">Aggiungi nuova ora</a></li>
-                        <li><a href="#tabs-3">Report ore progetti</a></li>
+                        <?php if($IsStaff || $IsReferente): ?>
+                          <li><a href="#tabs-3">Report ore progetti</a></li>
+                        <?php endif ?>
                       </ul>
                       <div id="tabs-1">
                           <div id="jsGrid"></div>
