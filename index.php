@@ -40,7 +40,8 @@
                       <ul>
                         <li><a href="#tabs-1">Ore inserite</a></li>
                         <li><a href="#tabs-2">Aggiungi nuova ora</a></li>
-                        <li><a href="#tabs-3">Report ore progetti</a></li>
+                        <li><a href="#tabs-3">Report ore referente</a></li>
+                        <li><a href="#tabs-4">Report ore FS</a></li>
                       </ul>
                       <div id="tabs-1">
                           <div id="jsGrid"></div>
@@ -49,7 +50,10 @@
                           <?php include_once('rendiForm.php'); ?>
                       </div>
                       <div id="tabs-3">
-                          <?php include_once('reportOre.php'); ?>
+                          <?php include_once('reportReferente.php'); ?>
+                      </div>
+                      <div id="tabs-4">
+                          <?php include_once('reportFS.php'); ?>
                       </div>
                     </div>
                 <?php else: ?>
