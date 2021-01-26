@@ -35,7 +35,6 @@
                     <label for="loginInfo" class="cols-sm-2 control-label">Utente conesso:</label>
                     <div id="loginInfo" class="cols-sm-2 text-center" >
                         <?php include_once('renderUserInfo.php') ?>
-                        <p>Non sei tu? <a href="<?php echo $redirect_uri ?>?logout">Esci</a></p>
                     </div>
                     <div id="tabs">
                       <ul>
@@ -54,12 +53,16 @@
                       <div id="tabs-2">
                           <?php include_once('rendiForm.php'); ?>
                       </div>
+                      <?php if($IsStaff || $IsReferente): ?>
                       <div id="tabs-3">
                           <?php include_once('reportReferente.php'); ?>
                       </div>
+                      <?php endif ?>
+                      <?php if($IsStaff || $IsFS): ?>
                       <div id="tabs-4">
                           <?php include_once('reportFS.php'); ?>
                       </div>
+                      <?php endif ?>
                     </div>
                 <?php else: ?>
 					<form action="<?php echo $googleAuthUrl; ?>" method="post">
