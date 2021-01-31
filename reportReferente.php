@@ -21,7 +21,7 @@
                               "WHERE rp.referente = " . $res["refid"] . " " .
                               "ORDER BY rp.nome_progetto";
 
-                if(!$progetti = mysqli_query($connection, $progetti_fs)) {
+                if(!$progetti = mysqli_query($connection, $progetti_ref)) {
                     echo "<div class='error'>";
                     echo "<p>Errore nel recupero dei dati dei progetti</p>";
                     echo "<p>Errno: " . $connection -> errno . "</p>";
@@ -34,10 +34,15 @@
 ?>
 
 <div id='reports'>
-    <?php while ($res = mysqli_fetch_assoc($progetti)) { ?>
-    <div class='report-progetto'>
-        <h3><?php echo $res['nome_progetto'] ?></h3>
-        <?php renderProgetto($res['id']); ?>
-    </div>
-    <?php } } ?>
+    <?php if ($progetti->num_rows === 0): ?>
+        <p>Nessun progetto presente</p>
+    <?php else: ?>
+        <?php while ($res = mysqli_fetch_assoc($progetti)) { ?>
+        <div class='report-progetto'>
+            <h3><?php echo $res['nome_progetto'] ?></h3>
+            <?php renderProgetto($res['id']); ?>
+        </div>
+        <?php } ?>
+    <?php endif ?>
+    <?php } ?>
 </div>

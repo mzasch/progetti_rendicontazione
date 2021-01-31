@@ -35,10 +35,15 @@
 ?>
 
 <div id='reports'>
-    <?php while ($res = mysqli_fetch_assoc($progetti)) { ?>
-    <div class='report-progetto'>
-        <h3><?php echo $res['nome_progetto'] ?></h3>
-        <?php renderProgetto($res['id']); ?>
-    </div>
-<?php } } ?>
+    <?php if ($progetti->num_rows === 0): ?>
+        <p>Nessun progetto presente</p>
+    <?php else: ?>
+        <?php while ($res = mysqli_fetch_assoc($progetti)) { ?>
+        <div class='report-progetto'>
+            <h3><?php echo $res['nome_progetto'] ?></h3>
+            <?php renderProgetto($res['id']); ?>
+        </div>
+        <?php } ?>
+    <?php endif ?>
+<?php } ?>
 </div>

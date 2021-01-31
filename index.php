@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <?php
-  session_start();
-  require('env.php');
-  include_once('google_oauth_config.php');
-  include_once('role_config.php');
+    session_start();
+    require('env.php');
+    include_once('google_oauth_config.php');
+    include_once('role_config.php');
 ?>
 <html>
 	<head>
@@ -65,9 +65,11 @@
                       <?php endif ?>
                     </div>
                 <?php else: ?>
-					<form action="<?php echo $googleAuthUrl; ?>" method="post">
-						<button type="submit" class="loginBtn loginBtn--google">Login with Google</button>
-					</form>
+                    <div id="loginButton" class="cols-sm-2 text-center" >
+    					<form action="<?php echo $googleAuthUrl; ?>" method="post">
+    						<button type="submit" class="loginBtn loginBtn--google">Login with Google</button>
+    					</form>
+                    </div>
 	    		<?php endif ?>
 				</div>
 			</div>

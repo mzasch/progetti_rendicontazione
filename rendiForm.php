@@ -9,31 +9,35 @@
                     "ORDER BY p.nome_progetto";
 
   if(!$docenti = mysqli_query($connection,$query_docenti)) {
-    echo "Something went horribly wrong with the query \"docenti\"\n";
-    echo "Errno: " . $connection -> errno . "\n";
-    echo "Error: " . $connection -> error . "\n";
-    exit;
+      echo "<div class='error'>";
+      echo "<p>Errore nel recupero dei dati dei docenti</p>";
+      echo "<p>Errno: " . $connection -> errno . "</p>";
+      echo "<p>Error: " . $connection -> error . "</p>";
+      echo "</div>";
+      exit;
   }
 
   if ($docenti -> num_rows === 0) {
-    echo "Something went horribly wrong with the query \"docenti\"\n";
-    echo "Errno: " . $connection -> errno . "\n";
-    echo "Error: " . $connection -> error . "\n";
-    exit;
+      echo "<div class='error'>";
+      echo "<p>Nessun docente presente</p>";
+      echo "</div>";
+      exit;
   }
 
   if(!$progetti = mysqli_query($connection,$query_progetti)) {
-    echo "Something went horribly wrong with the query \"progetti\"\n";
-    echo "Errno: " . $connection -> errno . "\n";
-    echo "Error: " . $connection -> error . "\n";
-    exit;
+      echo "<div class='error'>";
+      echo "<p>Errore nel recupero dei dati dei progetti</p>";
+      echo "<p>Errno: " . $connection -> errno . "</p>";
+      echo "<p>Error: " . $connection -> error . "</p>";
+      echo "</div>";
+      exit;
   }
 
   if ($progetti -> num_rows === 0) {
-    echo "Something went horribly wrong with the query \"progetti\"\n";
-    echo "Errno: " . $connection -> errno . "\n";
-    echo "Error: " . $connection -> error . "\n";
-    exit;
+      echo "<div class='error'>";
+      echo "<p>Nessun progetto presente</p>";
+      echo "</div>";
+      exit;
   }
 
 ?>
@@ -97,10 +101,12 @@
 							<div class="cols-sm-10">
 								<div class="input-group">
 							        <select id='sTipoOre' name="tipoOre" class="form-control">
-										<option value='1' selected>Docenza retribuita</option>
-										<option value='2'>Docenza in obbligo</option>
-										<option value='3'>Assistenza/Tutoraggio retribuita</option>
-										<option value='4'>Assistenza/Tutoraggio in obbligo</option>
+										<option value='6' selected>Progettazione - Ore in obbligo</option>
+                                        <option value='5'>Progettazione - Ore retribuite</option>
+                                        <option value='1'>Realizzazione - Docenza retribuita</option>
+                                        <option value='2'>Realizzazione - Docenza in obbligo</option>
+										<option value='3'>Realizzazione - Assistenza/Tutoraggio retribuita</option>
+										<option value='4'>Realizzazione - Assistenza/Tutoraggio in obbligo</option>
 									</select>
 								</div>
 							</div>

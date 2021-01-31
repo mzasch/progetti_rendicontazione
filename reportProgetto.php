@@ -14,10 +14,8 @@
                       "WHERE rp.id = $progettoId";
 
         if(!$ore = mysqli_query($connection, $progetto)) {
-            var_dump($connection);
             echo "<div class='error'>";
             echo "<p>Errore nel recupero dei dati del progetto $progettoId</p>";
-            echo "<p>Query: $progetto</p>";
             echo "<p>Errno: " . $connection -> errno . "</p>";
             echo "<p>Error: " . $connection -> error . "</p>";
             echo "</div>";
