@@ -39,7 +39,7 @@
     <?php else: ?>
         <?php while ($res = mysqli_fetch_assoc($progetti)) { ?>
         <div class='report-progetto'>
-            <h3><?php echo $res['nome_progetto'] ?></h3>
+            <h3><?php echo $res['nome_progetto']; ?></h3>
             <?php renderProgetto($res['id']); ?>
         </div>
         <?php } ?>

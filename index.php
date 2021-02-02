@@ -41,10 +41,10 @@
                         <li><a href="#tabs-1">Ore inserite</a></li>
                         <li><a href="#tabs-2">Aggiungi nuova ora</a></li>
                         <?php if($IsStaff || $IsReferente): ?>
-                          <li><a href="#tabs-3">Report ore progetti</a></li>
+                        <li><a href="#tabs-3">Report ore progetti</a></li>
                         <?php endif ?>
                         <?php if($IsStaff || $IsFS): ?>
-                            <li><a href="#tabs-4">Report ore FS</a></li>
+                        <li><a href="#tabs-4">Report ore FS</a></li>
                         <?php endif ?>
                       </ul>
                       <div id="tabs-1">
@@ -53,11 +53,13 @@
                       <div id="tabs-2">
                           <?php include_once('rendiForm.php'); ?>
                       </div>
+
                       <?php if($IsStaff || $IsReferente): ?>
                       <div id="tabs-3">
                           <?php include_once('reportReferente.php'); ?>
                       </div>
                       <?php endif ?>
+
                       <?php if($IsStaff || $IsFS): ?>
                       <div id="tabs-4">
                           <?php include_once('reportFS.php'); ?>
@@ -70,7 +72,7 @@
                     </div>
                     <div id="loginButton" class="row d-flex align-items-center justify-content-center" >
     					<form action="<?php echo $googleAuthUrl; ?>" method="post">
-    						<button type="submit" class="loginBtn loginBtn--google">Login with Google</button>
+    						<button type="submit" class="loginBtn loginBtn--google">Login (@chilesotti.it)</button>
     					</form>
                     </div>
 	    		<?php endif ?>
@@ -90,18 +92,17 @@
     <script src="js/jquery.datetimepicker.js"></script>
     <script src="js/griglia.js"></script>
 	<script>
-    function twoDigits(d) {
-        return d.toString().padStart(2, '0');
-    }
+        function twoDigits(d) {
+            return d.toString().padStart(2, '0');
+        }
 
-    function ConvertToMySqlStringDate(d){
-      return `${d.getFullYear()}-${twoDigits(1 + d.getMonth())}-${twoDigits(d.getDate())}`;
-    }
+        function ConvertToMySqlStringDate(d){
+          return `${d.getFullYear()}-${twoDigits(1 + d.getMonth())}-${twoDigits(d.getDate())}`;
+        }
 
-    function ConvertToMySqlStringTime(d){
-      return `${twoDigits(d.getHours())}:${twoDigits(d.getMinutes())}:00`;
-    }
-
+        function ConvertToMySqlStringTime(d){
+          return `${twoDigits(d.getHours())}:${twoDigits(d.getMinutes())}:00`;
+        }
 
 		$.datetimepicker.setLocale('it');
 		$('#sData').datetimepicker({inline:true,step:10,});
@@ -110,19 +111,19 @@
 			$(this).find("input[name=data]").remove();
 			var newData = $('#sData').datetimepicker('getValue');
 			var data = ConvertToMySqlStringDate(newData);
-      var ora = ConvertToMySqlStringTime(newData);
-		  $("<input />").attr("type", "hidden")
-          .attr("name", "data")
-          .attr("value", data)
-          .appendTo("#form");
-      $("<input />").attr("type", "hidden")
-          .attr("name", "ora")
-          .attr("value", ora)
-          .appendTo("#form");
-		  return true;
-	  });
+            var ora = ConvertToMySqlStringTime(newData);
+    		    $("<input />").attr("type", "hidden")
+                .attr("name", "data")
+                .attr("value", data)
+                .appendTo("#form");
+            $("<input />").attr("type", "hidden")
+                .attr("name", "ora")
+                .attr("value", ora)
+                .appendTo("#form");
+    		return true;
+	    });
 
-    $("#tabs").tabs();
+        $("#tabs").tabs();
 	</script>
 </body>
 </html>

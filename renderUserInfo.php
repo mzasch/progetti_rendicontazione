@@ -12,7 +12,7 @@
             echo "<div id='profile-pic' class='d-flex align-items-center justify-content-center'>";
             echo "<img src='" . $picture . "' />";
             echo "</div><div id='profile-info'>";
-            echo "<p>" . $res['cognome'] . " " . $res['nome'] . "</p>";
+            echo "<p><b>" . $res['cognome'] . " " . $res['nome'] . "</b></p>";
             echo "<p>Ruoli:</p>";
             echo "<ul>";
                 if($IsStaff)

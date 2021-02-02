@@ -21,6 +21,17 @@
             echo "</div>";
             exit;
         }
+
+
+        $tipoOre = array(
+            1 => "Realizzazione - Doc. retribuita",
+            2 => "Realizzazione - Doc. in obbligo",
+            3 => "Realizzazione - A/T retribuita",
+            4 => "Realizzazione - A/T in obbligo",
+            5 => "Progettazione - In obbligo",
+            6 => "Progettazione - Retribuita"
+        );
+
 ?>
     <table class="table table-hover table-sm">
       <thead class="thead-dark">
@@ -37,7 +48,7 @@
           <th scope="row"><?php echo $ora['docente']; ?></th>
           <td><?php echo $ora['dataOra']; ?></td>
           <td><?php echo $ora['nOre']; ?></td>
-          <td><?php echo $ora['tipologiaOre']; ?></td>
+          <td><?php echo $tipoOre[$ora['tipologiaOre']]; ?></td>
         </tr>
       <?php } ?>
       </tbody>

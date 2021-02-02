@@ -40,10 +40,12 @@ $(function() {
 
       tipoOre = [
           { id: 0, descrizione: "" },
-          { id: 1, descrizione: "Docenza retribuita"},
-          { id: 2, descrizione: "Docenza in obbligo"},
-          { id: 3, descrizione: "A/T retribuita"},
-          { id: 4, descrizione: "A/T in obbligo"},
+          { id: 1, descrizione: "Realizzazione - Doc. retribuita"},
+          { id: 2, descrizione: "Realizzazione - Doc. in obbligo"},
+          { id: 3, descrizione: "Realizzazione - A/T retribuita"},
+          { id: 4, descrizione: "Realizzazione - A/T in obbligo"},
+          { id: 5, descrizione: "Progettazione - In obbligo"},
+          { id: 6, descrizione: "Progettazione - Retribuita"},
       ];
 
         $("#jsGrid").jsGrid({
@@ -89,7 +91,7 @@ $(function() {
             },
             fields: [
                 { name: "progetto", title: "Progetto", type: "text", width: 100, editing: false },
-                { name: "docente", title: "Docente", type: "text", width: 100, editing: false },
+                //{ name: "docente", title: "Docente", type: "text", width: 100, editing: false },
                 { name: "dataOra", title: "Data/Ora", type: "text", width: 100 },
                 { name: "nOre", title: "N. Ore", type: "decimal", width: 50 , filtering: false, step: 0.5 },
                 { name: "tipologiaOre", title: "Tipo Ore", type: "select", width: 100 , items: tipoOre, valueField: "id", textField: "descrizione" },
