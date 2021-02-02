@@ -9,7 +9,9 @@
     if ($docente_info = mysqli_query($conn, $sql)) {
         if ($docente_info->num_rows != 0) {
             $res = mysqli_fetch_assoc($docente_info);
-            echo "<img src='" . $picture . "?sz=50' />";
+            echo "<div id='profile-pic' class='d-flex align-items-center justify-content-center'>";
+            echo "<img src='" . $picture . "' />";
+            echo "</div><div id='profile-info'>";
             echo "<p>" . $res['cognome'] . " " . $res['nome'] . "</p>";
             echo "<p>Ruoli:</p>";
             echo "<ul>";
@@ -21,6 +23,7 @@
                     echo "<li>Funzione Strumentale</li>";
             echo "</ul>";
             echo "<p>Non sei tu? <a href='$redirect_uri?logout'>Esci</a></p>";
+            echo "</div>";
         }
     }
  ?>

@@ -33,7 +33,7 @@
 				<div class="main-login main-center">
                 <?php if (isset($_SESSION['access_token'])): ?>
                     <label for="loginInfo" class="cols-sm-2 control-label">Utente conesso:</label>
-                    <div id="loginInfo" class="cols-sm-2 text-center" >
+                    <div id="loginInfo" class="cols-sm-2" >
                         <?php include_once('renderUserInfo.php') ?>
                     </div>
                     <div id="tabs">
@@ -65,7 +65,10 @@
                       <?php endif ?>
                     </div>
                 <?php else: ?>
-                    <div id="loginButton" class="cols-sm-2 text-center" >
+                    <div class='row d-flex align-items-center justify-content-center'>
+                        <img id='itt-logo' src='img/Logo_chilesotti_294.png' alt='Logo ITT Chilesotti' />
+                    </div>
+                    <div id="loginButton" class="row d-flex align-items-center justify-content-center" >
     					<form action="<?php echo $googleAuthUrl; ?>" method="post">
     						<button type="submit" class="loginBtn loginBtn--google">Login with Google</button>
     					</form>

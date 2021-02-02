@@ -1,6 +1,11 @@
 #loginInfo{
+    display: flex;
     border: 1px solid black;
 }
+
+#profile-pic { width: 50%; }
+#profile-info { width: 50%; }
+#itt-logo {  width: 300px;  height: auto; padding-bottom: 10px; }
 
 .loginBtn {
   box-sizing: border-box;
