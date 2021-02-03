@@ -12,7 +12,7 @@
                     "FROM rend_docenti rd ".
                     "WHERE rd.email = '$currentUser'";
 
-        if($ref_docente = mysqli_query($connection, $query_fs)) {
+        if($ref_docente = mysqli_query($connection, $query_ref)) {
             if($ref_docente -> num_rows != 0){
                 $res = mysqli_fetch_assoc($ref_docente);
 
