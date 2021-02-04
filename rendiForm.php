@@ -101,9 +101,9 @@
 							<div class="cols-sm-10">
 								<div class="input-group">
 							        <select id='sTipoOre' name="tipoOre" class="form-control">
-										<option value='6' selected>Progettazione - Ore in obbligo</option>
                                         <option value='5'>Progettazione - Ore retribuite</option>
-                                        <option value='1'>Realizzazione - Docenza retribuita</option>
+										<option value='6'>Progettazione - Ore in obbligo</option>
+                                        <option value='1'selected>Realizzazione - Docenza retribuita</option>
                                         <option value='2'>Realizzazione - Docenza in obbligo</option>
 										<option value='3'>Realizzazione - Assistenza/Tutoraggio retribuita</option>
 										<option value='4'>Realizzazione - Assistenza/Tutoraggio in obbligo</option>

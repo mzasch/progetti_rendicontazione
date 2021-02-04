@@ -44,8 +44,8 @@ $(function() {
           { id: 2, descrizione: "Realizzazione - Doc. in obbligo"},
           { id: 3, descrizione: "Realizzazione - A/T retribuita"},
           { id: 4, descrizione: "Realizzazione - A/T in obbligo"},
-          { id: 5, descrizione: "Progettazione - In obbligo"},
-          { id: 6, descrizione: "Progettazione - Retribuita"},
+          { id: 5, descrizione: "Progettazione - Retribuita"},
+          { id: 6, descrizione: "Progettazione - In obbligo"},
       ];
 
         $("#jsGrid").jsGrid({
@@ -83,8 +83,8 @@ $(function() {
                 },
                 deleteItem: function(item) {
                     return $.ajax({
-                        type: "DELETE",
-                        url: "ore/",
+                        type: "POST",
+                        url: "eliminaOre.php",
                         data: item
                     });
                 }
