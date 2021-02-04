@@ -12,25 +12,14 @@ switch($_SERVER["REQUEST_METHOD"]) {
             "docente" => $_SESSION['loggedEmail'],
         ));
         break;
-/*
-    case "POST":
-        $result = $clients->insert(array(
-            "name" => $_POST["name"],
-            "age" => intval($_POST["age"]),
-            "address" => $_POST["address"],
-            "married" => $_POST["married"] === "true" ? 1 : 0,
-            "country_id" => intval($_POST["country_id"])
-        ));
-        break;
-*/
-    case "PUT":
-        parse_str(file_get_contents("php://input"), $_PUT);
 
+    case "POST":
         $result = $ore->update(array(
-            "id" => intval($_PUT["id"]),
-            "dataOra" => $_PUT["dataOra"],
-            "nOre" => $_PUT["nOre"],
-            "tipologiaOre" => $_PUT["tipologiaOre"]
+            "id" => intval($_POST["id"]),
+            "data" => $_POST['data'],
+            "ora" => $_POST['ora'],
+            "nOre" => $_POST["nOre"],
+            "tipologiaOre" => intval($_POST["tipologiaOre"])
         ));
         break;
 

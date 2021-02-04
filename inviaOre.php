@@ -21,7 +21,7 @@
 	  $nOre = $_POST['nOre'];
 	  $tOre = $_POST['tipoOre'];
 
-	  $insert_ora->bind_param("issii", $docente, $progetto, $dataOra, $nOre, $tOre);
+	  $insert_ora->bind_param("issdi", $docente, $progetto, $dataOra, $nOre, $tOre);
 
 	  if (!$insert_ora->execute()) {
   		echo "Something went horribly wrong with the insert\n";

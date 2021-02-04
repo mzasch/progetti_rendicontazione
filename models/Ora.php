@@ -4,7 +4,8 @@ class Ora {
     public $id;
     public $docente;
     public $progetto;
-    public $dataOra;
+    public $data;
+    public $ora;
     public $nOre;
     public $tipologiaOre;
 }

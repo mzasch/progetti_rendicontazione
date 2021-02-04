@@ -15,7 +15,8 @@ class OreRepository {
         $result->id = intval($row["id"]);
         $result->docente = $row["docente"];
         $result->progetto = $row["progetto"];
-        $result->dataOra = $row["dataOra"];
+        $result->data = $row["data"];
+        $result->ora = $row["ora"];
         $result->nOre = $row["nOre"];
         $result->tipologiaOre = intval($row["tipologiaOre"]);
         return $result;
@@ -34,7 +35,7 @@ class OreRepository {
         $progetto = "'%" . $filter["progetto"] . "%'";
         $docente = "'%" . $filter["docente"] . "%'";
 
-        $sql = "SELECT ro.id, ro.dataOra, ro.nOre, ro.tipologiaOre, rp.nome_progetto as progetto, CONCAT_WS(' ', rd.cognome, rd.nome) as docente " .
+        $sql = "SELECT ro.id, DATE(ro.dataOra) AS `data`, TIME(ro.dataOra) AS `ora`, ro.nOre, ro.tipologiaOre, rp.nome_progetto as progetto, CONCAT_WS(' ', rd.cognome, rd.nome) as docente " .
                 " FROM rend_orerendicontate ro " .
                 " JOIN rend_progetti rp ON ro.progetto = rp.id " .
                 " JOIN rend_docenti rd ON ro.docente = rd.id " .
@@ -64,14 +65,17 @@ class OreRepository {
 
     public function update($data) {
         $update_values = array();
-        if(!empty($data["dataOra"]))
-            $update_values[] = "dataOra='".$data["dataOra"]."'";
+        if(!empty($data["data"]))
+            $update_values[] = "data='".$data["data"]."'";
+
+        if(!empty($data["ora"]))
+            $update_values[] = "ora='".$data["ora"]."'";
 
         if(!empty($data["nOre"]))
             $update_values[] = "nOre='".$data["nOre"]."'";
 
         if(!empty($data["tipologiaOre"]))
-            $update_values[] = "tipologiaOre='".$data["tipologiaOre"]."'";
+            $update_values[] = "tipologiaOre=".$data["tipologiaOre"];
 
         $update_values_imploded = implode(', ', $update_values);
 

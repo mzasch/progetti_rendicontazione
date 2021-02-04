@@ -3,8 +3,14 @@
     border: 1px solid black;
 }
 
-#profile-info li::before {
-  content: '✔';
+#profile-info li.role-yes::before {
+  content: '✅';
+  margin-left: -1em;
+  margin-right: 0.5em;
+}
+
+#profile-info li.role-no::before {
+  content: '❌';
   margin-left: -1em;
   margin-right: 0.5em;
 }

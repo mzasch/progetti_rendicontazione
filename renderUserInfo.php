@@ -15,12 +15,9 @@
             echo "<h3>" . $res['cognome'] . " " . $res['nome'] . "</h3>";
             echo "<p>Ruoli:</p>";
             echo "<ul>";
-                if($IsStaff)
-                    echo "<li>Staff</li>";
-                if($IsReferente)
-                    echo "<li>Referente progetto</li>";
-                if($IsFS)
-                    echo "<li>Funzione Strumentale</li>";
+            echo "<li class='". ($IsStaff? "role-yes":"role-no") ."'>Staff</li>";
+            echo "<li class='". ($IsReferente? "role-yes":"role-no") ."'>Referente progetto</li>";
+            echo "<li class='". ($IsFS? "role-yes":"role-no") ."'>Funzione Strumentale</li>";
             echo "</ul>";
             echo "<p>Non sei tu? <a href='$redirect_uri?logout'>Esci</a></p>";
             echo "</div>";

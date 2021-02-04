@@ -49,7 +49,6 @@ $(function() {
       ];
 
         $("#jsGrid").jsGrid({
-            //height: "70%",
             width: "100%",
             filtering: true,
             editing: true,
@@ -58,6 +57,7 @@ $(function() {
             autoload: true,
             pageSize: 10,
             pageButtonCount: 5,
+            noDataContent: "Nessuna ora dichiarata",
             deleteConfirm: "Vuoi veramente rimuovere questa riga?",
             controller: {
                 loadData: function(filter) {
@@ -76,8 +76,8 @@ $(function() {
                 },
                 updateItem: function(item) {
                     return $.ajax({
-                        type: "PUT",
-                        url: "ore/",
+                        type: "POST",
+                        url: "aggiornaOre.php",
                         data: item
                     });
                 },
@@ -91,8 +91,8 @@ $(function() {
             },
             fields: [
                 { name: "progetto", title: "Progetto", type: "text", width: 100, editing: false },
-                //{ name: "docente", title: "Docente", type: "text", width: 100, editing: false },
-                { name: "dataOra", title: "Data/Ora", type: "text", width: 100 },
+                { name: "data", title: "Data", type: "text", width: 100 },
+                { name: "ora", title: "Ora", type: "text", width: 100 },
                 { name: "nOre", title: "N. Ore", type: "decimal", width: 50 , filtering: false, step: 0.5 },
                 { name: "tipologiaOre", title: "Tipo Ore", type: "select", width: 100 , items: tipoOre, valueField: "id", textField: "descrizione" },
                 { type: "control",
