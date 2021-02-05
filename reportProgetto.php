@@ -28,8 +28,8 @@
             2 => "Realizzazione - Doc. in obbligo",
             3 => "Realizzazione - A/T retribuita",
             4 => "Realizzazione - A/T in obbligo",
-            5 => "Progettazione - In obbligo",
-            6 => "Progettazione - Retribuita"
+            5 => "Progettazione - Retribuita",
+            6 => "Progettazione - In obbligo",
         );
 
 ?>

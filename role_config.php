@@ -22,4 +22,11 @@
 
     if($dati = mysqli_query($connection, $query))
         $IsFS = ($dati -> num_rows != 0);
+
+    $query  = "SELECT rd.id " .
+              "FROM rend_docenti rd " .
+              "WHERE rd.email = '" . $_SESSION['loggedEmail'] . "' AND rd.isStaff";
+
+    if($dati = mysqli_query($connection, $query))
+        $IsStaff = ($dati -> num_rows != 0);
   }
