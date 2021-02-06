@@ -110,4 +110,5 @@ $(function() {
             ]
         //});
     });
+    $("#grid").jsGrid("sort", 0);
 });
