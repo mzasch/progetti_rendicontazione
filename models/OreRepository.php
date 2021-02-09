@@ -39,7 +39,8 @@ class OreRepository {
                 " FROM rend_orerendicontate ro " .
                 " JOIN rend_progetti rp ON ro.progetto = rp.id " .
                 " JOIN rend_docenti rd ON ro.docente = rd.id " .
-                " WHERE rp.nome_progetto LIKE $progetto AND rd.email LIKE $docente ";
+                " WHERE rp.nome_progetto LIKE $progetto AND rd.email LIKE $docente " .
+                " ORDER BY rp.id";
         $ore = mysqli_query($this->db, $sql);
 
         $result = array();
