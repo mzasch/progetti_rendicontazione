@@ -1,11 +1,18 @@
 <?php
+session_start();
+
+if (isset($_SESSION['loggedEmail']) && $_SESSION['loggedEmail']) {
+  $currentUser = $_SESSION['loggedEmail'];
   $connection = mysqli_connect($host, $user, $password, $dbname)
                 or die('Something went horribly wrong with the connection' . mysqli_connect_error());
 
   $query_docenti  = "SELECT d.id, d.nome, d.cognome FROM rend_docenti d " .
                     "ORDER BY d.cognome";
-  $query_progetti = "SELECT p.id, p.nome_progetto, d.cognome ref_cognome, d.nome ref_nome " .
-                    "FROM rend_progetti p JOIN rend_docenti d ON p.referente = d.id " .
+  $query_progetti = "SELECT p.id, p.nome_progetto " .
+                    "FROM rend_progetti p " .
+                    "JOIN rend_docenti_progetti rdp ON rdp.progetti_id = p.id " .
+                    "JOIN rend_docenti exe_d ON rdp.docenti_id = exe_d.id " .
+                    "WHERE exe_d.email = '$currentUser'" .
                     "ORDER BY p.nome_progetto";
 
   if(!$docenti = mysqli_query($connection,$query_docenti)) {
@@ -39,6 +46,7 @@
       echo "</div>";
       exit;
   }
+}
 
 ?>
 

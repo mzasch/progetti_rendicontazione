@@ -32,7 +32,6 @@
 	            </div>
 				<div class="main-login main-center">
                 <?php if (isset($_SESSION['access_token'])): ?>
-                    <label for="loginInfo" class="cols-sm-2 control-label">Utente conesso:</label>
                     <div id="loginInfo" class="cols-sm-2" >
                         <?php include_once('renderUserInfo.php') ?>
                     </div>

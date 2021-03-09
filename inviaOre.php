@@ -13,29 +13,48 @@
         exit;
       }
 
-	  $insert_ora  = $conn->prepare("INSERT INTO rend_orerendicontate (`docente`,`progetto`,`dataOra`, `nOre`, `tipologiaOre`) VALUES (?,?,?,?,?)");
-
 	  $docente = (mysqli_fetch_assoc($dati_docente)['id']);
 	  $progetto = $_POST['progetto'];
 	  $dataOra = $_POST['data']." ".$_POST['ora'];
 	  $nOre = $_POST['nOre'];
-	  $tOre = $_POST['tipoOre'];
+	  $tOre = intval($_POST['tipoOre']);
 
-	  $insert_ora->bind_param("issdi", $docente, $progetto, $dataOra, $nOre, $tOre);
+      if (permessiDocente($conn, $docente, $progetto, $tOre)) {
+          $insert_ora  = $conn->prepare("INSERT INTO rend_orerendicontate (`docente`,`progetto`,`dataOra`, `nOre`, `tipologiaOre`) VALUES (?,?,?,?,?)");
+    	  $insert_ora->bind_param("issdi", $docente, $progetto, $dataOra, $nOre, $tOre);
 
-	  if (!$insert_ora->execute()) {
-  		echo "Something went horribly wrong with the insert\n";
-  		echo "Errno: " . $conn -> errno . "\n";
-  		echo "Error: " . $conn -> error . "\n";
-  		exit;
-	  }
+    	  if (!$insert_ora->execute()) {
+      		echo "Something went horribly wrong with the insert\n";
+      		echo "Errno: " . $conn -> errno . "\n";
+      		echo "Error: " . $conn -> error . "\n";
+      		exit;
+    	  }
 
-	  $insert_ora->close();
+    	  $insert_ora->close();
+      }
   }
   else
   {
 	  $redirect_uri = 'https://www.chilesotti.it/rendicontazione/';
 	  header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+  }
+
+  function permessiDocente($conn, $docente, $progetto, $tOre) {
+      $query_permessi  = "SELECT inc.* FROM rend_docenti_progetti inc WHERE inc.docenti_id = $docente AND inc.progetti_id = $progetto";
+      if($permessi_docente = mysqli_query($conn,$query_permessi)) {
+          $permessi = mysqli_fetch_assoc($permessi_docente);
+          $isProgettista = intval($permessi['progettista']);
+          $isRealizzatore = intval($permessi['realizzatore']);
+
+          return (
+              (($isProgettista === 1) && ($tOre >= 5)) ||
+              (($isRealizzatore === 1) && ($tOre <= 4))
+          );
+      }
+      else
+      {
+          return False;
+      }
   }
   ?>
 <html>
