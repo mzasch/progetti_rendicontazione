@@ -3,15 +3,38 @@
   require_once('env.php');
   $conn = mysqli_connect($host, $user, $password, $dbname)
           or die('Something went horribly wrong with the connection' . mysqli_connect_error());
-  if (isset($_SESSION['loggedEmail']) && $_SESSION['loggedEmail']) {
-      $query_docenti  = "SELECT d.id FROM rend_docenti d WHERE d.email = '" . $_SESSION['loggedEmail'] . "'";
 
-      if(!$dati_docente = mysqli_query($conn,$query_docenti)) {
-        echo "Something went horribly wrong with the query \"docenti\"\n";
-        echo "Errno: " . $conn -> errno . "\n";
-        echo "Error: " . $conn -> error . "\n";
-        exit;
+  function permessiDocente($conn, $docente, $progetto, $tOre) {
+      $query_permessi = "
+          SELECT inc.progettista, inc.realizzatore, p.concluso
+          FROM rend_docenti_progetti inc JOIN rend_progetti p ON inc.progetti_id = p.id
+          WHERE inc.docenti_id = $docente AND inc.progetti_id = $progetto";
+
+      if($permessi_docente = mysqli_query($conn,$query_permessi)) {
+          $permessi = mysqli_fetch_assoc($permessi_docente);
+          $isProgettista = intval($permessi['progettista']) === 1;
+          $isRealizzatore = intval($permessi['realizzatore']) === 1;
+          $isConcluso = intval($permessi['concluso']) === 1;
+
+          return array($isConcluso, (($isProgettista) && ($tOre >= 5)), (($isRealizzatore) && ($tOre <= 4)));
       }
+      else
+      {
+          return array(Flase, False, False);
+      }
+  }
+
+  if (isset($_SESSION['loggedEmail']) && $_SESSION['loggedEmail']) {
+    $query_docenti  = "SELECT d.id FROM rend_docenti d WHERE d.email = '" . $_SESSION['loggedEmail'] . "'";
+
+    if(!$dati_docente = mysqli_query($conn,$query_docenti)) {
+      echo "<div class='error'>";
+      echo "<p>Errore nel recupero dei dati</p>";
+      echo "<p>Errno: " . $connection -> errno . "</p>";
+      echo "<p>Error: " . $connection -> error . "</p>";
+      echo "</div>";
+      exit;
+    }
 
 	  $docente = (mysqli_fetch_assoc($dati_docente)['id']);
 	  $progetto = $_POST['progetto'];
@@ -19,19 +42,30 @@
 	  $nOre = $_POST['nOre'];
 	  $tOre = intval($_POST['tipoOre']);
 
-      if (permessiDocente($conn, $docente, $progetto, $tOre)) {
-          $insert_ora  = $conn->prepare("INSERT INTO rend_orerendicontate (`docente`,`progetto`,`dataOra`, `nOre`, `tipologiaOre`) VALUES (?,?,?,?,?)");
-    	  $insert_ora->bind_param("issdi", $docente, $progetto, $dataOra, $nOre, $tOre);
+    list($isConcluso, $puoInsProgettazione, $puoInsRealizzazione) = permessiDocente($conn, $docente, $progetto, $tOre);
 
-    	  if (!$insert_ora->execute()) {
-      		echo "Something went horribly wrong with the insert\n";
-      		echo "Errno: " . $conn -> errno . "\n";
-      		echo "Error: " . $conn -> error . "\n";
-      		exit;
-    	  }
+    $risultato = "";
 
-    	  $insert_ora->close();
+    if ($isConcluso){
+      $risultato = "<p class='error'>Impossibile inserire nuove ore, il progetto è concluso.</p>";
+    }
+    else if ($puoInsProgettazione || $puoInsRealizzazione) {
+      $insert_ora  = $conn->prepare("INSERT INTO rend_orerendicontate (`docente`,`progetto`,`dataOra`, `nOre`, `tipologiaOre`) VALUES (?,?,?,?,?)");
+      $insert_ora->bind_param("issdi", $docente, $progetto, $dataOra, $nOre, $tOre);
+
+  	  if (!$insert_ora->execute()) {
+        $risultato = "<p class='error'>Errore di inserimento</p>\n".
+        "<p>Errno: " . $conn -> errno . "</p>\n".
+        "<p>Error: " . $conn -> error . "</p>\n".
+        "</div>";
+  	  } else {
+  	     $insert_ora->close();
+         $risultato = "<p>Rendicontazione inserita con successo.</p>";
       }
+    }
+    else {
+      $risultato = "<p class='error'>Non sei autorizzato ad inserire ore per questo progetto.</p>";
+    }
   }
   else
   {
@@ -39,23 +73,6 @@
 	  header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
   }
 
-  function permessiDocente($conn, $docente, $progetto, $tOre) {
-      $query_permessi  = "SELECT inc.* FROM rend_docenti_progetti inc WHERE inc.docenti_id = $docente AND inc.progetti_id = $progetto";
-      if($permessi_docente = mysqli_query($conn,$query_permessi)) {
-          $permessi = mysqli_fetch_assoc($permessi_docente);
-          $isProgettista = intval($permessi['progettista']);
-          $isRealizzatore = intval($permessi['realizzatore']);
-
-          return (
-              (($isProgettista === 1) && ($tOre >= 5)) ||
-              (($isRealizzatore === 1) && ($tOre <= 4))
-          );
-      }
-      else
-      {
-          return False;
-      }
-  }
   ?>
 <html>
   <head>
@@ -77,8 +94,8 @@
 	            </div>
 			</div>
 			<div class="main-login main-center">
-				<p>Rendicontazione inserita con successo.</p>
-				<p>Clicca <a href="index.php">qui</a> per inserire un'altra ora.</p>
+				<?php echo $risultato; ?>
+				<p>Clicca <a href="index.php">qui</a> per tornare indietro.</p>
 			</div>
 		</div>
 	</div>

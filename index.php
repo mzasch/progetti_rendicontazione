@@ -80,8 +80,8 @@
                     </div>
                     <div id="loginButton" class="row d-flex align-items-center justify-content-center" >
     					<form action="<?php echo $googleAuthUrl; ?>" method="post">
-    						<button type="submit" class="loginBtn loginBtn--google">Login (@chilesotti.it)</button>
-                <!--p>Manutenzione in corso</p-->
+    						<!--button type="submit" class="loginBtn loginBtn--google">Login (@chilesotti.it)</button-->
+                <p>Manutenzione in corso</p>
     					</form>
                     </div>
 	    		<?php endif ?>
