@@ -1,6 +1,7 @@
 {
     "require": {
-        "google/apiclient": "^2.8"
+        "google/apiclient": "^2.8",
+        "mpdf/mpdf": "^8.0"
     },
     "config": {
 		"platform": {

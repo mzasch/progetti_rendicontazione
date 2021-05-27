@@ -45,6 +45,9 @@
                         <?php if($IsStaff || $IsFS): ?>
                         <li><a href="#tabs-4">Report ore FS</a></li>
                         <?php endif ?>
+                        <?php if($IsStaff): ?>
+                        <li><a href="#tabs-5">Scarica schede progetto</a></li>
+                        <?php endif ?>
                       </ul>
                       <div id="tabs-1">
                           <div id="jsGrid"></div>
@@ -64,6 +67,12 @@
                           <?php include_once('reportFS.php'); ?>
                       </div>
                       <?php endif ?>
+
+                      <?php if($IsStaff): ?>
+                      <div id="tabs-5">
+                          <?php include_once('richiediReport.php'); ?>
+                      </div>
+                      <?php endif ?>
                     </div>
                 <?php else: ?>
                     <div class='row d-flex align-items-center justify-content-center'>
@@ -72,6 +81,7 @@
                     <div id="loginButton" class="row d-flex align-items-center justify-content-center" >
     					<form action="<?php echo $googleAuthUrl; ?>" method="post">
     						<button type="submit" class="loginBtn loginBtn--google">Login (@chilesotti.it)</button>
+                <!--p>Manutenzione in corso</p-->
     					</form>
                     </div>
 	    		<?php endif ?>
