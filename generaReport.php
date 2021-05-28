@@ -232,9 +232,9 @@
           ';
 
           while($res = mysqli_fetch_assoc($ore)) {
-            $lordo_dip = (floatval($res['ore_progettista_extra']) * COSTO_PROG)+
-                         (floatval($res['ore_realizzatore_doc_extra']) * COSTO_DOC)+
-                         (floatval($res['ore_realizzatore_tut_extra']) * COSTO_TUT);
+            $lordo_dip = (floatval($res['Prog_Retribuita']) * COSTO_PROG)+
+                         (floatval($res['Doc_Retribuita']) * COSTO_DOC)+
+                         (floatval($res['Tut_Retribuita']) * COSTO_TUT);
 
             $ottoecinquanta_dip = $lordo_dip * 0.085;
             $ventiquattroeventi_dip = $lordo_dip * 0.2420;
@@ -295,8 +295,7 @@
           $i = 0;
           $prev_res = null;
           while ($res = mysqli_fetch_assoc($dati_dettagli)) {
-            if ($prev_res == null || $prev_res != $res['id'])
-            {
+            if ($prev_res == null || $prev_res != $res['id']) {
               $prev_res = $res['id'];
               $i = 0;
             }
@@ -321,10 +320,11 @@
             ';
 
             foreach($ore_rend as $singola_ora){
+              $dataOra = new DateTime($singola_ora['dataOra']);
               $docenti_dett = $docenti_dett.
               '
-                <tr>
-                  <td class="detail-time">'.(new DateTime($singola_ora['dataOra']))->format("d-m-Y H:i").'</td>
+                <tr class="'.(($dataOra->format("H") < 14) ? "mattina" : "").'">
+                  <td class="detail-time">'.$dataOra->format("d-m-Y H:i").'</td>
                   <td class="detail-hour">'.$singola_ora['nOre'].'</td>
                   <td class="detail-type">'.categoria(intval($singola_ora['tipologiaOre'])).'</td>
                 </tr>

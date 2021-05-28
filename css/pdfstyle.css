@@ -79,3 +79,7 @@ td.detail-type {
   width: 300px;
   text-align: left;
 }
+
+tr.mattina {
+  background-color: yellow;
+}
