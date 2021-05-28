@@ -25,7 +25,7 @@
 
     if (isset($_SESSION['loggedEmail']) && $_SESSION['loggedEmail']) {
       $currentUser = $_SESSION['loggedEmail'];
-      $idProgetto = 14;
+      $idProgetto = $_POST['progetto'];
 
       $query_progetti = '
         SELECT p.nome_progetto, p.codice_bilancio,
@@ -61,9 +61,9 @@
           IF(d.id IS NULL, NULL, d.cognome) Cognome,
           IF(d.id IS NULL, NULL, d.nome) Nome,
 
-          ANY_VALUE(ore_progettista_extra),
-          ANY_VALUE(ore_realizzatore_doc_extra),
-          ANY_VALUE(ore_realizzatore_tut_extra),
+          ANY_VALUE(ore_progettista_extra) AS ore_progettista_extra,
+          ANY_VALUE(ore_realizzatore_doc_extra) AS ore_realizzatore_doc_extra,
+          ANY_VALUE(ore_realizzatore_tut_extra) AS ore_realizzatore_tut_extra,
 
           SUM(CASE When ore.tipologiaOre = 1 THEN ore.nOre ELSE 0 END ) AS Doc_Retribuita,
           SUM(CASE When ore.tipologiaOre = 3 THEN ore.nOre ELSE 0 END ) AS Tut_Retribuita,
@@ -75,8 +75,7 @@
                                       JOIN rend_docenti d ON ore.docente = d.id
                                       JOIN rend_docenti_progetti rdp
                                     	ON ore.progetto = rdp.progetti_id AND ore.docente = rdp.docenti_id
-        WHERE ore.progetto = 14
-
+        WHERE ore.progetto = '.$idProgetto.'
         GROUP BY d.id
       ';
 
