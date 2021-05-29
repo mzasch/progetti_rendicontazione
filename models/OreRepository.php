@@ -19,6 +19,7 @@ class OreRepository {
         $result->ora = $row["ora"];
         $result->nOre = $row["nOre"];
         $result->tipologiaOre = intval($row["tipologiaOre"]);
+        $result->concluso = intval($row["concluso"]);
         return $result;
     }
 
@@ -35,7 +36,7 @@ class OreRepository {
         $progetto = "'%" . $filter["progetto"] . "%'";
         $docente = "'%" . $filter["docente"] . "%'";
 
-        $sql = "SELECT ro.id, DATE(ro.dataOra) AS `data`, TIME(ro.dataOra) AS `ora`, ro.nOre, ro.tipologiaOre, rp.nome_progetto as progetto, CONCAT_WS(' ', rd.cognome, rd.nome) as docente " .
+        $sql = "SELECT ro.id, DATE(ro.dataOra) AS `data`, TIME(ro.dataOra) AS `ora`, ro.nOre, ro.tipologiaOre, rp.nome_progetto as progetto, CONCAT_WS(' ', rd.cognome, rd.nome) as docente, rp.concluso " .
                 " FROM rend_orerendicontate ro " .
                 " JOIN rend_progetti rp ON ro.progetto = rp.id " .
                 " JOIN rend_docenti rd ON ro.docente = rd.id " .

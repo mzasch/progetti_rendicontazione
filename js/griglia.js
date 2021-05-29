@@ -59,6 +59,14 @@ $(function() {
             pageButtonCount: 5,
             noDataContent: "Nessuna ora dichiarata",
             deleteConfirm: "Vuoi veramente rimuovere questa riga?",
+
+            onItemEditing: function(args) {
+              // blocca l'editing delle righe con campo 'concluso' = 1
+                if(args.item.concluso === 1) {
+                    args.cancel = true;
+                }
+            },
+
             controller: {
                 loadData: function(filter) {
                     return $.ajax({
@@ -106,6 +114,16 @@ $(function() {
                     insertButtonTooltip: "Inserisci",
                     updateButtonTooltip: "Aggiorna",
                     cancelEditButtonTooltip: "Annulla le modifiche",
+
+                    align:"center",
+                    itemTemplate: function(value, item) {
+                      var $result = $([]);
+                      if( item.concluso == 0 ) {
+                        $result = $result.add(this._createEditButton(item));
+                        $result = $result.add(this._createDeleteButton(item));
+                      }
+                      return $result;
+                    },
                 }
             ]
         //});
