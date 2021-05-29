@@ -131,3 +131,8 @@ label{
 .iconbk{
 	background-color:#5CB85C;
 }
+
+p.error {
+  color: red;
+  font-weight: bold;
+}

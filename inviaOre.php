@@ -10,6 +10,15 @@
           FROM rend_docenti_progetti inc JOIN rend_progetti p ON inc.progetti_id = p.id
           WHERE inc.docenti_id = $docente AND inc.progetti_id = $progetto";
 
+      /*
+        Friendly reminder dei codici delle tipologie di ore:
+          1-Realizzazione - Docenza retribuita
+          2-Realizzazione - Docenza in obbligo
+          3-Realizzazione - Assistenza/Tutoraggio retribuita
+          4-Realizzazione - Assistenza/Tutoraggio in obbligo
+          5-Progettazione - Ore retribuite
+          6-Progettazione - Ore in obbligo
+      */
       if($permessi_docente = mysqli_query($conn,$query_permessi)) {
           $permessi = mysqli_fetch_assoc($permessi_docente);
           $isProgettista = intval($permessi['progettista']) === 1;
@@ -64,7 +73,7 @@
       }
     }
     else {
-      $risultato = "<p class='error'>Non sei autorizzato ad inserire ore per questo progetto.</p>";
+      $risultato = "<p class='error'>Non sei autorizzato ad inserire questo tipo di ore per questo progetto.</p>";
     }
   }
   else
@@ -99,6 +108,7 @@
 			</div>
 		</div>
 	</div>
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
 </body>
 </html>
