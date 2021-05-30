@@ -47,7 +47,12 @@ if (isset($_SESSION['loggedEmail']) && $_SESSION['loggedEmail']) {
 			</div>
 		</div>
 	</div>
-  <div class="form-group">
-		<input type="submit" class="btn btn-success btn-lg btn-block login-button" value="Scarica il report" />
+  <div id="show-confirm-button" class="form-group">
+    <div id="confirm-area">
+      <p>Questa operazione causer&agrave; la chiusura del progetto, impedendo l'inserimento di nuove ore. Confermi?</p>
+      <input type="checkbox" id="confirm-close" name="confirm-close" value="1" />
+      <label for="confirm-close">Confermo, chiudi il progetto</label>
+  		<input type="submit" class="btn btn-success btn-lg btn-block login-button" value="Scarica il report" />
+    </div>
 	</div>
 </form>

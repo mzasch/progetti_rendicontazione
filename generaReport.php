@@ -105,6 +105,34 @@
       ]);
       $mpdf->shrink_tables_to_fit = 1;
 
+
+      if (isset($_POST['confirm-close']) && $_POST['confirm-close'] == 1) {
+        // FIXME: SQL Injection
+        $chiusura_progetto = 'UPDATE rend_progetti p SET p.concluso = 1 WHERE p.id = '.$idProgetto;
+
+        if(!$ore = mysqli_query($connection,$chiusura_progetto)) {
+            echo "<div class='error'>";
+            echo "<p>Errore nel recupero delle ore del progetto</p>";
+            echo "<p>Errno: " . $connection -> errno . "</p>";
+            echo "<p>Error: " . $connection -> error . "</p>";
+            echo "</div>";
+            exit;
+        }
+
+        if ($ore -> num_rows === 0) {
+            echo "<div class='error'>";
+            echo "<p>Nessuna ora presente</p>";
+            echo "</div>";
+            exit;
+        }
+
+      } else {
+        $mpdf->SetWatermarkText('BOZZA'); // Will cope with UTF-8 encoded text
+        $mpdf->watermark_font = 'DejaVuSansCondensed'; // Uses default font if left blank
+      }
+
+
+
       // Define the Headers before writing anything so they appear on the first page
       $mpdf->SetHTMLHeader('
       <table id="header-table">
