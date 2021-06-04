@@ -107,7 +107,7 @@
 
       if (isset($_POST['confirm-close']) && $_POST['confirm-close'] == 1) {
         // FIXME: SQL Injection
-        $chiusura_progetto = 'UPDATE rend_progetti p SET p.concluso = 1 WHERE p.id = '.$idProgetto;
+        $chiusura_progetto = 'UPDATE rend_progetti p SET p.bloccato = 1 WHERE p.id = '.$idProgetto;
 
         if(!$result = mysqli_query($connection,$chiusura_progetto)) {
             echo "<div class='error'>";
@@ -120,7 +120,9 @@
 
       } else {
         $mpdf->SetWatermarkText('BOZZA'); // Will cope with UTF-8 encoded text
+	$mpdf->watermarkTextAlpha = 0.1;
         $mpdf->watermark_font = 'DejaVuSansCondensed'; // Uses default font if left blank
+        $mpdf->showWatermarkText = True;
       }
 
       // Define the Headers before writing anything so they appear on the first page

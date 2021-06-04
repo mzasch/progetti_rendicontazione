@@ -6,7 +6,7 @@
 
   function permessiDocente($conn, $docente, $progetto, $tOre) {
       $query_permessi = "
-          SELECT inc.progettista, inc.realizzatore, p.concluso
+          SELECT inc.progettista, inc.realizzatore, p.bloccato
           FROM rend_docenti_progetti inc JOIN rend_progetti p ON inc.progetti_id = p.id
           WHERE inc.docenti_id = $docente AND inc.progetti_id = $progetto";
 
@@ -23,9 +23,9 @@
           $permessi = mysqli_fetch_assoc($permessi_docente);
           $isProgettista = intval($permessi['progettista']) === 1;
           $isRealizzatore = intval($permessi['realizzatore']) === 1;
-          $isConcluso = intval($permessi['concluso']) === 1;
+          $isBloccato = intval($permessi['bloccato']) === 1;
 
-          return array($isConcluso, (($isProgettista) && ($tOre >= 5)), (($isRealizzatore) && ($tOre <= 4)));
+          return array($isBloccato, (($isProgettista) && ($tOre >= 5)), (($isRealizzatore) && ($tOre <= 4)));
       }
       else
       {
@@ -51,12 +51,12 @@
 	  $nOre = $_POST['nOre'];
 	  $tOre = intval($_POST['tipoOre']);
 
-    list($isConcluso, $puoInsProgettazione, $puoInsRealizzazione) = permessiDocente($conn, $docente, $progetto, $tOre);
+    list($isBloccato, $puoInsProgettazione, $puoInsRealizzazione) = permessiDocente($conn, $docente, $progetto, $tOre);
 
     $risultato = "";
 
-    if ($isConcluso){
-      $risultato = "<p class='error'>Impossibile inserire nuove ore, il progetto è concluso.</p>";
+    if ($isBloccato){
+      $risultato = "<p class='error'>Impossibile inserire nuove ore, il progetto è bloccato.</p>";
     }
     else if ($puoInsProgettazione || $puoInsRealizzazione) {
       $insert_ora  = $conn->prepare("INSERT INTO rend_orerendicontate (`docente`,`progetto`,`dataOra`, `nOre`, `tipologiaOre`) VALUES (?,?,?,?,?)");

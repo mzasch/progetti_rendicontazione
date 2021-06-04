@@ -20,6 +20,7 @@ class OreRepository {
         $result->nOre = $row["nOre"];
         $result->tipologiaOre = intval($row["tipologiaOre"]);
         $result->concluso = intval($row["concluso"]);
+        $result->bloccato = intval($row["bloccato"]);
         return $result;
     }
 
