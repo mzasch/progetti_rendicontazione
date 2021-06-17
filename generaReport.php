@@ -117,10 +117,9 @@
             echo "</div>";
             exit;
         }
-
       } else {
         $mpdf->SetWatermarkText('BOZZA'); // Will cope with UTF-8 encoded text
-	$mpdf->watermarkTextAlpha = 0.1;
+        $mpdf->watermarkTextAlpha = 0.1;
         $mpdf->watermark_font = 'DejaVuSansCondensed'; // Uses default font if left blank
         $mpdf->showWatermarkText = True;
       }
@@ -154,77 +153,11 @@
 
       $lordo_stato_prog_prev = $lordo_prog_prev + $ottoecinquanta_prog_prev + $ventiquattroeventi_prog_prev;
 
-      $tot_rendicontate = floatval($dati_prog['ore_progettazione_rend']) +
-                          floatval($dati_prog['ore_doc_extra_rend']) +
-                          floatval($dati_prog['ore_tut_extra_rend']);
+      $ore_progettazione_rend = 0;
+      $ore_doc_extra_rend = 0;
+      $ore_tut_extra_rend = 0;
 
-      $tot_arrotondate = round(floatval($dati_prog['ore_progettazione_rend'])) +
-                         round(floatval($dati_prog['ore_doc_extra_rend'])) +
-                         round(floatval($dati_prog['ore_tut_extra_rend']));
-
-      $lordo_prog_rend = (round(floatval($dati_prog['ore_progettazione_rend'])) * COSTO_PROG)+
-                         (round(floatval($dati_prog['ore_doc_extra_rend'])) * COSTO_DOC)+
-                         (round(floatval($dati_prog['ore_tut_extra_rend'])) * COSTO_TUT);
-
-      $ottoecinquanta_prog_rend = $lordo_prog_rend * 0.085;
-      $ventiquattroeventi_prog_rend = $lordo_prog_rend * 0.2420;
-
-      $lordo_stato_prog_rend = $lordo_prog_rend + $ottoecinquanta_prog_rend + $ventiquattroeventi_prog_rend;
-
-      $generale = '
-        <h2>Riepilogo generale</h2>
-        <table id="progetto-generale" >
-          <thead>
-          <tr>
-              <th><br></th>
-              <th><b>Progettazione</b></th>
-              <th><b>Docenza</b></th>
-              <th><b>Non docenza</b></th>
-              <th><b>Totale Ore</b></th>
-
-      	<th><b>Lordo progetto</b></th>
-              <th><b>8.50%</b></th>
-              <th><b>24.20%</b></th>
-              <th><b>Lordo Stato</b></th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr>
-              <td class="table-row">Preventivate</td>
-              <td class="single-hour">'.$dati_prog['ore_progettazione_extra'].'</td>
-              <td class="single-hour">'.$dati_prog['ore_realizzazione_doc_extra'].'</td>
-              <td class="single-hour">'.$dati_prog['ore_realizzazione_tut_extra'].'</td>
-              <td class="single-hour">'.$tot_previste.'</td>
-
-              <td class="money">'.number_format($lordo_prog_prev, 2, ',', '.').' &euro;</td>
-              <td class="money">'.number_format($ottoecinquanta_prog_prev, 2, ',', '.').' &euro;</td>
-              <td class="money">'.number_format($ventiquattroeventi_prog_prev, 2, ',', '.').' &euro;</td>
-                  <td class="money">'.number_format($lordo_stato_prog_prev, 2, ',', '.').' &euro;</td>
-              </tr>
-              <tr>
-                  <td class="table-row">Rendicontate</td>
-                  <td class="hour">'.$dati_prog['ore_progettazione_rend'].'</td>
-                  <td class="hour">'.$dati_prog['ore_doc_extra_rend'].'</td>
-                  <td class="hour">'.$dati_prog['ore_tut_extra_rend'].'</td>
-                  <td class="hour">'.$tot_rendicontate.'</td>
-              </tr>
-              <tr>
-                  <td class="table-row">Arrotondamento rendicontate</td>
-                  <td class="hour">'.round($dati_prog['ore_progettazione_rend']).'</td>
-                  <td class="hour">'.round($dati_prog['ore_doc_extra_rend']).'</td>
-                  <td class="hour">'.round($dati_prog['ore_tut_extra_rend']).'</td>
-                  <td class="hour">'.$tot_arrotondate.'</td>
-
-                  <td class="money">'.number_format($lordo_prog_rend, 2, ',', '.').' &euro;</td>
-                  <td class="money">'.number_format($ottoecinquanta_prog_rend, 2, ',', '.').' &euro;</td>
-                  <td class="money">'.number_format($ventiquattroeventi_prog_rend, 2, ',', '.').' &euro;</td>
-                  <td class="money">'.number_format($lordo_stato_prog_rend, 2, ',', '.').' &euro;</td>
-              </tr>
-              </tbody>
-          </table>
-          ';
-
-          $docenti_gen = '
+      $docenti_gen = '
           <h2>Riepilogo per docenti</h2>
           <table id="progetto-docenti" width="100%" cellspacing="0" border="0">
               <thead>
@@ -240,6 +173,7 @@
                   <th align="center"><b>Non doc. Rend.</b></th>
 
                   <th align="center"><b>Totale Ore</b></th>
+                  <th align="center"><b>Totale Ore Arrot.</b></th>
 
           	<th align="center"><b>Lordo dip.</b></th>
                   <th align="center"><b>8.50%</b></th>
@@ -252,9 +186,13 @@
           ';
 
           while($res = mysqli_fetch_assoc($ore)) {
-            $lordo_dip = (floatval($res['Prog_Retribuita']) * COSTO_PROG)+
-                         (floatval($res['Doc_Retribuita']) * COSTO_DOC)+
-                         (floatval($res['Tut_Retribuita']) * COSTO_TUT);
+            $lordo_dip = (round(floatval($res['Prog_Retribuita'])) * COSTO_PROG)+
+                         (round(floatval($res['Doc_Retribuita'])) * COSTO_DOC)+
+                         (round(floatval($res['Tut_Retribuita'])) * COSTO_TUT);
+
+            $ore_progettazione_rend += round(floatval($res['Prog_Retribuita']));
+            $ore_doc_extra_rend += round(floatval($res['Doc_Retribuita']));
+            $ore_tut_extra_rend += round(floatval($res['Tut_Retribuita']));
 
             $ottoecinquanta_dip = $lordo_dip * 0.085;
             $ventiquattroeventi_dip = $lordo_dip * 0.2420;
@@ -266,15 +204,16 @@
               <tr>
                   <td class="table-row">'.$res['Cognome'].' '.$res['Nome'].'</td>
                   <td class="hour">'.$res['ore_progettista_extra'].'</td>
-                  <td class="hour">'.$res['Prog_Retribuita'].'</td>
+                  <td class="hour">'.round(floatval($res['Prog_Retribuita'])).'</td>
 
                   <td class="hour">'.$res['ore_realizzatore_doc_extra'].'</td>
-                  <td class="hour">'.$res['Doc_Retribuita'].'</td>
+                  <td class="hour">'.round(floatval($res['Doc_Retribuita'])).'</td>
 
                   <td class="hour">'.$res['ore_realizzatore_tut_extra'].'</td>
-                  <td class="hour">'.$res['Tut_Retribuita'].'</td>
+                  <td class="hour">'.round(floatval($res['Tut_Retribuita'])).'</td>
 
-                  <td class="hour">'.$res['Totale_ore_retribuite'].'</td>
+                  <td class="hour">'.(round(floatval($res['Prog_Retribuita']))+round(floatval($res['Doc_Retribuita']))+round(floatval($res['Tut_Retribuita']))).'</td>
+                  <td class="hour">'.(round(floatval($res['Prog_Retribuita']))+round(floatval($res['Doc_Retribuita']))+round(floatval($res['Tut_Retribuita']))).'</td>
 
                   <td class="money">'.number_format($lordo_dip, 2, ',', '.').' &euro;</td>
                   <td class="money">'.number_format($ottoecinquanta_dip, 2, ',', '.').' &euro;</td>
@@ -288,6 +227,77 @@
               </tbody>
           </table>
           ';
+
+          $tot_rendicontate = $ore_progettazione_rend +
+                              $ore_doc_extra_rend +
+                              $ore_tut_extra_rend;
+
+          $tot_arrotondate = round($ore_progettazione_rend) +
+                             round($ore_doc_extra_rend) +
+                             round($ore_tut_extra_rend);
+
+          $lordo_prog_rend = (round($ore_progettazione_rend) * COSTO_PROG)+
+                             (round($ore_doc_extra_rend) * COSTO_DOC)+
+                             (round($ore_tut_extra_rend) * COSTO_TUT);
+
+          $ottoecinquanta_prog_rend = $lordo_prog_rend * 0.085;
+          $ventiquattroeventi_prog_rend = $lordo_prog_rend * 0.2420;
+
+          $lordo_stato_prog_rend = $lordo_prog_rend + $ottoecinquanta_prog_rend + $ventiquattroeventi_prog_rend;
+
+          $generale = '
+            <h2>Riepilogo generale</h2>
+            <table id="progetto-generale" >
+              <thead>
+              <tr>
+                  <th><br></th>
+                  <th><b>Progettazione</b></th>
+                  <th><b>Docenza</b></th>
+                  <th><b>Non docenza</b></th>
+                  <th><b>Totale Ore</b></th>
+
+            <th><b>Lordo progetto</b></th>
+                  <th><b>8.50%</b></th>
+                  <th><b>24.20%</b></th>
+                  <th><b>Lordo Stato</b></th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr>
+                  <td class="table-row">Preventivate</td>
+                  <td class="single-hour">'.$dati_prog['ore_progettazione_extra'].'</td>
+                  <td class="single-hour">'.$dati_prog['ore_realizzazione_doc_extra'].'</td>
+                  <td class="single-hour">'.$dati_prog['ore_realizzazione_tut_extra'].'</td>
+                  <td class="single-hour">'.$tot_previste.'</td>
+
+                  <td class="money">'.number_format($lordo_prog_prev, 2, ',', '.').' &euro;</td>
+                  <td class="money">'.number_format($ottoecinquanta_prog_prev, 2, ',', '.').' &euro;</td>
+                  <td class="money">'.number_format($ventiquattroeventi_prog_prev, 2, ',', '.').' &euro;</td>
+                      <td class="money">'.number_format($lordo_stato_prog_prev, 2, ',', '.').' &euro;</td>
+                  </tr>
+                  <tr>
+                      <td class="table-row">Rendicontate</td>
+                      <td class="hour">'.$ore_progettazione_rend.'</td>
+                      <td class="hour">'.$ore_doc_extra_rend.'</td>
+                      <td class="hour">'.$ore_tut_extra_rend.'</td>
+                      <td class="hour">'.$tot_rendicontate.'</td>
+                  </tr>
+                  <tr>
+                      <td class="table-row">Arrotondamento rendicontate</td>
+                      <td class="hour">'.round($ore_progettazione_rend).'</td>
+                      <td class="hour">'.round($ore_doc_extra_rend).'</td>
+                      <td class="hour">'.round($ore_tut_extra_rend).'</td>
+                      <td class="hour">'.$tot_arrotondate.'</td>
+
+                      <td class="money">'.number_format($lordo_prog_rend, 2, ',', '.').' &euro;</td>
+                      <td class="money">'.number_format($ottoecinquanta_prog_rend, 2, ',', '.').' &euro;</td>
+                      <td class="money">'.number_format($ventiquattroeventi_prog_rend, 2, ',', '.').' &euro;</td>
+                      <td class="money">'.number_format($lordo_stato_prog_rend, 2, ',', '.').' &euro;</td>
+                  </tr>
+                  </tbody>
+              </table>
+              ';
+
 
           $query_ore_docenti = '
               SELECT d.id, d.cognome, d.nome, ore.dataOra, ore.nOre, ore.tipologiaOre
